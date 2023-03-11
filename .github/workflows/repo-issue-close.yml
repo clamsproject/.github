@@ -1,0 +1,17 @@
+name: "unassign all when an issue is closed"
+on: 
+  issues:
+    types:
+      - closed
+jobs:
+  unassign:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Remove assignees
+        id: delete
+        uses: octokit/request-action@v2.x
+        with:
+          route: PATCH /repos/${{ github.repository }}/issues/${{ github.event.issue.number }}
+          assignees: '[]'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_CLAMSBOT_TOKEN }}
