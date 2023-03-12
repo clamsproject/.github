@@ -1,6 +1,10 @@
 name: "unassign all when an issue is closed"
 on: 
   workflow_call:
+    secrets:
+      GH_CLAMSBOT_TOKEN: 
+        description: 'A GH PAT passed from the caller workflow'
+        required: true
   issues:
     types:
       - closed
@@ -14,5 +18,6 @@ jobs:
         with:
           route: PATCH /repos/${{ github.repository }}/issues/${{ github.event.issue.number }}
           assignees: '[]'
-        env:
+        env:   
           GITHUB_TOKEN: ${{ secrets.GH_CLAMSBOT_TOKEN }}
+          
