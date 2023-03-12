@@ -12,7 +12,7 @@ Organization defaults for CLAMS project
 
 ## Workflows
 
-### `build.yml`
+### `app-docker.yml`
 
 Workflow action to:
 
@@ -42,7 +42,7 @@ on:
 jobs:
   build:
     name: 🔨 Build and deploy
-    uses: clamsproject/.github/.github/workflows/build.yml@main
+    uses: clamsproject/.github/.github/workflows/app-docker.yml@main
 ```
 
 ## Organization Profile

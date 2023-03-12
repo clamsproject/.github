@@ -1,5 +1,6 @@
 name: "unassign all when an issue is closed"
 on: 
+  workflow_call:
   issues:
     types:
       - closed

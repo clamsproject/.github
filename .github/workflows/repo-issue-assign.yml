@@ -1,5 +1,6 @@
 name: "assign an issue when issue branch is created"
 on: 
+  workflow_call:
   create:
 jobs:
   assign:
