@@ -25,13 +25,18 @@ jobs:
     - name: build HTML documentation 
       run: |
         make docs
+    - name : generate changelog
+      run: |
+        for pr in $(gh pr list -s merged | grep -i releas | cut -f 1 ); do gh pr view $pr --json title,body,mergedAt --template '{{printf "\n"}}## {{.title}} ({{timefmt "2006-01-02" .mergedAt}}){{printf "\n"}}{{.body}}{{printf "\n"}}'; done > CHANGELOG.md
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: configure clamsbot git user
       run: |
         git config --local user.email "admin@clams.ai"
         git config --local user.name "clams-bot"
     - name: commit the built documentation 
       run: |
-        git add docs documentation
+        git add docs documentation CHANGELOG.md
         git add -u docs
         git commit -m 'adding HTML documentation for publication'
     - name: push the documentation commit
