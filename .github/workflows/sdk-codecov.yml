@@ -20,11 +20,10 @@ jobs:
         echo "codecov.dev" > VERSION
         make test
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v1
+      uses: codecov/codecov-action@v3
       with:
-        file: ./coverage.xml
+        files: ./coverage.xml
         flags: unittests
         env_vars: OS,PYTHON
         name: coverage
         fail_ci_if_error: true
-        path_to_write_report: ./codecov_report.gz
