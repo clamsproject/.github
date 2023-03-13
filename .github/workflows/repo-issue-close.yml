@@ -8,15 +8,46 @@ on:
   issues:
     types:
       - closed
+  pull_request:
+    types:
+      - closed
 jobs:
+  
+  unassign-reviewers:
+    if: ${{ github.event_name == 'pull_request' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get reviewers
+        id: get
+        uses: octokit/request-action@v2.x
+        with:
+          route: GET /repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/requested_reviewers
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_CLAMSBOT_TOKEN }}
+      - name: Remove reviewers
+        id: delete
+        uses: octokit/request-action@v2.x
+        with:
+          route: DELETE /repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/requested_reviewers
+          reviewers: ${{ toJson(fromJson(steps.get_reviewers.outputs.data).users.*.login) }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_CLAMSBOT_TOKEN }}
   unassign:
     runs-on: ubuntu-latest
     steps:
+      - name: Get issue number
+        id: issue_number   
+        if: ${{ github.event_name == 'issues' }}
+        run: echo "num=${{ github.event.issue.number }}" >> $GITHUB_ENV
+      - name: Get PR number
+        id: pr_number   
+        if: ${{ github.event_name == 'pull_request' }}
+        run: echo "num=${{ github.event.pull_request.number }}" >> $GITHUB_ENV
       - name: Remove assignees
         id: delete
         uses: octokit/request-action@v2.x
         with:
-          route: PATCH /repos/${{ github.repository }}/issues/${{ github.event.issue.number }}
+          route: PATCH /repos/${{ github.repository }}/issues/${{ env.num }}
           assignees: '[]'
         env:   
           GITHUB_TOKEN: ${{ secrets.GH_CLAMSBOT_TOKEN }}
