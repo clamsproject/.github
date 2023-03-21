@@ -8,15 +8,17 @@ jobs:
       OS: linux
       PYTHON: '3.8'
     steps:
+    - name: set VERSION value
+      run: |
+        echo "VERSION=$(echo "${{ github.ref }}" | cut -d/ -f3)" >> $GITHUB_ENV
     - name: checkout the repo 
       uses: actions/checkout@v3
+      with:
+        ref: ${{ env.VERSION }}
     - name: setup python
       uses: actions/setup-python@v4
       with:
         python-version: 3.8
-    - name: set VERSION value
-      run: |
-        echo "VERSION=$(echo "${{ github.ref }}" | cut -d/ -f3)" >> $GITHUB_ENV
     - name: build a sdist
       run: |
         echo ${{ env.VERSION }} > VERSION
