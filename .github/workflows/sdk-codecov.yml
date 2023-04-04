@@ -1,6 +1,10 @@
 name: test and send code coverage to codecov.io
 on:
   workflow_call:
+    secrets:
+      CC_REPO_UPLOAD_TOKEN:
+        description: 'A CODECOV_TOKEN for their upload CLI tool. Should be obtained repo-by-repo basis, from https://app.codecov.io/gh/GH_ORG_NAME/GH_REPO_NAME/settings'
+        required: true
 jobs:
   test-and-codecov:
     runs-on: ubuntu-latest
@@ -22,7 +26,7 @@ jobs:
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3
       with:
-        token: ${{ secrets.CODECOV_CLAMSBOT_TOKEN }}
+        token: ${{ secrets.CC_REPO_UPLOAD_TOKEN }}
         files: ./coverage.xml
         flags: unittests
         env_vars: OS,PYTHON
