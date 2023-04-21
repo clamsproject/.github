@@ -1,5 +1,6 @@
 name: 💡 Feature Request
 description: Suggest an idea for this project
+labels: ":sparkles:N"
 body:
   - type: markdown
     attributes:
@@ -12,7 +13,7 @@ body:
     id: summary
     attributes:
       description: ✏️ Briefly summarize your feature request
-      label: Summary
+      label: New Feature Summary
       placeholder: |
         As a [user]
         when I [action] 
