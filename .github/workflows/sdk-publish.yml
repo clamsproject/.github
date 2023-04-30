@@ -8,9 +8,10 @@ jobs:
       OS: linux
       PYTHON: '3.8'
     steps:
-    - name: set VERSION value
+    - name: set package metadata
       run: |
         echo "VERSION=$(echo "${{ github.ref }}" | cut -d/ -f3)" >> $GITHUB_ENV
+        echo "PACKAGE=$(echo "${{ github.repository }}" | cut -d/ -f2)" >> $GITHUB_ENV 
     - name: checkout the repo 
       uses: actions/checkout@v3
       with:
@@ -48,4 +49,4 @@ jobs:
         branch: main
     - name: upload to the official pypi
       run: |
-        twine upload -u __token__ -p ${{ secrets.PYPITOKEN }} dist/clams-python-${{ env.VERSION }}.tar.gz 
+        twine upload -u __token__ -p ${{ secrets.PYPITOKEN }} dist/${{ env.PACKAGE }}-${{ env.VERSION }}.tar.gz 
