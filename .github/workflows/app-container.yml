@@ -4,9 +4,11 @@ on:
   workflow_call:
     inputs:
       version:
-        required: true
         type: string
         description: 'version of the app to build an image. must be also tagged on github'
+      arm64:
+        type: boolean
+        description: 'set true to build arm64 image as well into a multiplatform image via docker buildx'
 
 env:
   REGISTRY: ghcr.io
@@ -60,7 +62,7 @@ jobs:
         with:
           context: .
           file: ./Containerfile
-          platforms: linux/amd64
+          platforms: "${{ inputs.arm64 && 'linux/amd64,linux/arm64' || 'linux/amd64' }}"
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
