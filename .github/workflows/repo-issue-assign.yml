@@ -1,4 +1,5 @@
-name: "assign an issue when issue branch is created"
+name: "Issue Assigner: assign an issue when issue branch is created"
+
 on: 
   workflow_call:
     secrets:

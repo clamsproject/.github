@@ -1,4 +1,5 @@
-name: "unassign all when an issue is closed"
+name: "Issue Unassigner: unassign all when an issue or a pull request is closed"
+
 on: 
   workflow_call:
     secrets:

@@ -1,4 +1,4 @@
-name: "assign an issue when issue branch is created"
+name: "Issue to GHP: add the issue or PR to a GHP, should be triggered by a new issue/PR"
 
 on:
   workflow_call:

@@ -1,4 +1,5 @@
-name: upload HTML documentation, PyPI distribution
+name: "SDK Publisher: upload HTML version API documentation, PyPI distribution"
+
 on: 
   workflow_call:
 jobs:

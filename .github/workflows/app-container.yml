@@ -1,5 +1,4 @@
-name: ":whale: App Image Builder"
-description: "build an app image and upload to ghcr.io"
+name: "App Image Builder : build an app image and upload to ghcr.io"
 
 on:
   workflow_call:

@@ -1,4 +1,5 @@
-name: test and send code coverage to codecov.io
+name: "SDK Tester: run unittests and upload coverage to codecov.io"
+
 on:
   workflow_call:
     secrets:
