@@ -41,8 +41,7 @@ body:
     attributes:
       label: Screenshots
       description: 📸 If applicable, add screenshots to help explain your problem.
-      value: |
-        ![DESCRIPTION](LINK.png)
+      placeholder: Drag-and-drop some image files
       render: bash
 
   - type: textarea
