@@ -1,4 +1,4 @@
-name: "Issue Assigner: assign an issue when issue branch is created"
+name: "♻️,📜 Assignment"
 
 on: 
   workflow_call:
@@ -7,17 +7,17 @@ on:
         description: 'A GH PAT passed from the caller workflow'
         required: true
   create:
+
 jobs:
   assign:
+    name: "🙆 Assign issue on issue branch creation"
     if: github.ref_type == 'branch'
     runs-on: ubuntu-latest
     steps:
-      - name: Get the issue number from the new branch name
+      - name: "#️⃣ Get the issue number from the new branch name"
         id: parse-issue-num
         run: echo "num=$(echo ${{ github.ref_name }}  | grep -E '^[0-9]+-' | cut -d '-' -f 1)" >> $GITHUB_OUTPUT
-      - name: Print parsed issue num
-        run: echo "${{ steps.parse-issue-num.outputs.num }}"
-      - name: Reopen issue
+      - name: "🗃 Reopen issue"
         if: ${{ steps.parse-issue-num.outputs.num  != '' }}
         id: reopen
         uses: octokit/request-action@v2.x
@@ -26,7 +26,7 @@ jobs:
           state: 'open'
         env:
           GITHUB_TOKEN: ${{ secrets.GH_CLAMSBOT_TOKEN }}
-      - name: Assign issue
+      - name: "🫡 Assign issue"
         if: ${{ steps.parse-issue-num.outputs.num  != '' }}
         id: assign
         uses: octokit/request-action@v2.x

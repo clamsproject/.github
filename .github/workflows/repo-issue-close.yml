@@ -1,4 +1,4 @@
-name: "Issue Unassigner: unassign all when an issue or a pull request is closed"
+name: "♻️,📜 Unassignment"
 
 on: 
   workflow_call:
@@ -15,17 +15,18 @@ on:
 jobs:
   
   unassign-reviewers:
+    name: "🙅 Unassign reviewers from PR"
     if: ${{ github.event_name == 'pull_request' }}
     runs-on: ubuntu-latest
     steps:
-      - name: Get reviewers
+      - name: "🧐 Get reviewers"
         id: get
         uses: octokit/request-action@v2.x
         with:
           route: GET /repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/requested_reviewers
         env:
           GITHUB_TOKEN: ${{ secrets.GH_CLAMSBOT_TOKEN }}
-      - name: Remove reviewers
+      - name: "🫥 Remove reviewers"
         id: delete
         if: ${{ steps.get.outputs.data.users }}
         uses: octokit/request-action@v2.x
@@ -35,17 +36,18 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GH_CLAMSBOT_TOKEN }}
   unassign:
+    name: "🙅 Unassign assignees from issue"
     runs-on: ubuntu-latest
     steps:
-      - name: Get issue number
+      - name: "#️⃣ Get issue number"
         id: issue_number   
         if: ${{ github.event_name == 'issues' }}
         run: echo "num=${{ github.event.issue.number }}" >> $GITHUB_ENV
-      - name: Get PR number
+      - name: "#️⃣ Get PR number"
         id: pr_number   
         if: ${{ github.event_name == 'pull_request' }}
         run: echo "num=${{ github.event.pull_request.number }}" >> $GITHUB_ENV
-      - name: Remove assignees
+      - name: "🫥 Remove assignees"
         id: delete
         uses: octokit/request-action@v2.x
         with:

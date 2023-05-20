@@ -1,4 +1,4 @@
-name: "SDK Tester: run unittests and upload coverage to codecov.io"
+name: "♻️,🏋️ Test with coverage (codecov.io)"
 
 on:
   workflow_call:
@@ -8,23 +8,26 @@ on:
         required: true
 jobs:
   test-and-codecov:
+    name: "🧪 Test with coverage"
     runs-on: ubuntu-latest
     env:
       OS: linux
       PYTHON: '3.8'
     steps:
-    - name: checkout the repo 
+    - name: "📰 Checkout repository"
       uses: actions/checkout@v3
-    - name: Setup Python
+      with:
+        ref: ${{ github.ref }}
+    - name: "🐍 Setup Python"
       uses: actions/setup-python@v4
       with:
         python-version: 3.8
-    - name: Run test and generate coverage report
+    - name: "🧪 Run test and generate coverage report"
       working-directory: .
       run: |
         echo "codecov.dev" > VERSION
         make test
-    - name: Upload coverage to Codecov
+    - name: "☁️ Upload coverage to Codecov"
       uses: codecov/codecov-action@v3
       with:
         token: ${{ secrets.CC_REPO_UPLOAD_TOKEN }}

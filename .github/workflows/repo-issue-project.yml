@@ -1,4 +1,4 @@
-name: "Issue to GHP: add the issue or PR to a GHP, should be triggered by a new issue/PR"
+name: "♻️,📜 Add to GHP"
 
 on:
   workflow_call:
@@ -14,7 +14,7 @@ on:
 
 jobs:
   add-to-project:
-    name: Add issue to project
+    name: "🗂 Add issue to project"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/add-to-project@v0.5.0

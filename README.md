@@ -1,50 +1,28 @@
-# clamsproject/.github
+## clamsproject/.github
 
 Organization defaults for CLAMS project
 
-## Issue templates
+### Issue templates
 
-### 📋 Because / Done when
+* 📋 Because / Done when
 
-### 🐛 Bug Report
+* 🐛 Bug Report
 
-### 💡 Feature Request
+* 💡 Feature Request
 
-## Workflows
+**(there's always a link to a BLANK issue at the bottom of issue creation pages to bypass templates)**
 
-### `app-docker.yml`
+### Pull request templates
 
-Workflow action to:
+* release: use for PRs to release a new version of SDK packages - `mmif`, `mmif-python`, `clams-python` repositories.
 
-- Build a docker image
-- Extract labels and tags
-- Login to gchr.io
-  - Can override with environment variables
-- Publish image
+**(Otherwise, delete the text content before start writing your PR)**
 
-#### Usage
+### GitHub Actions Workflows
 
-Create a `WORKFLOW_NAME.yml` file in your repository under `.github/workflows/`
+This repository contains [re-usable](https://docs.github.com/en/actions/using-workflows/reusing-workflows) (callable) GitHub Actions workflows that are called by other repositories in the `clamsproject` organization. 
 
-```yml
-name: 🪂 Continuous Deployment
+* `app-*.yml`: workflows for app release process
+* `repo-*.yml`: workflows for repository management
+* `sdk-*.yml`: workflows for SDK release process
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
-  release:
-    types: [published, edited, prereleased]
-
-jobs:
-  build:
-    name: 🔨 Build and deploy
-    uses: clamsproject/.github/.github/workflows/app-docker.yml@main
-```
-
-## Organization Profile
-
-Coming soon!
