@@ -1,4 +1,4 @@
-name: "♻️,📜 Unassignment"
+name: "♻️,🪧 Unassignment"
 
 on: 
   workflow_call:

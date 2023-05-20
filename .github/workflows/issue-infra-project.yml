@@ -1,4 +1,4 @@
-name: "🔖 Add new issue to `infra` GHP"
+name: "🗂 Add new issue to `infra` GHP"
 
 on:
   issues:

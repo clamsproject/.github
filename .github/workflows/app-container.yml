@@ -1,4 +1,4 @@
-name: "♻️,💻 Image build and push to ghcr"
+name: "♻️,💻 Image builder/pusher (ghcr)"
 
 on:
   workflow_call:
@@ -16,14 +16,14 @@ env:
 
 jobs:
   build-and-push-image:
-    name: "🏗 Build and push image"
+    name: "🐳 Build and push image"
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
 
     steps:
-      - name: "📰 Checkout repository"
+      - name: "🛍️ Checkout repository"
         uses: actions/checkout@v3
         with:
           ref: ${{ inputs.version }}

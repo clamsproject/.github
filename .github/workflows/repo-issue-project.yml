@@ -1,4 +1,4 @@
-name: "♻️,📜 Add to GHP"
+name: "♻️,🪧 To GHP"
 
 on:
   workflow_call:

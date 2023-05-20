@@ -1,4 +1,4 @@
-name: "♻️,🏋️ Test with coverage (codecov.io)"
+name: "♻️,🏋️ Test runner"
 
 on:
   workflow_call:
@@ -14,7 +14,7 @@ jobs:
       OS: linux
       PYTHON: '3.8'
     steps:
-    - name: "📰 Checkout repository"
+    - name: "🛍️ Checkout repository"
       uses: actions/checkout@v3
       with:
         ref: ${{ github.ref }}
