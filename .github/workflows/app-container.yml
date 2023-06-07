@@ -9,6 +9,10 @@ on:
       arm64:
         type: boolean
         description: 'set true to build arm64 image as well into a multiplatform image via docker buildx'
+      file:
+        type: string
+        description: 'path to the Containerfile or Dockerfile to use for building the image'
+        default: './Containerfile'
 
 env:
   REGISTRY: ghcr.io
@@ -61,7 +65,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          file: ./Containerfile
+          file: ${{ inputs.file }}
           platforms: "${{ inputs.arm64 && 'linux/amd64,linux/arm64' || 'linux/amd64' }}"
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
