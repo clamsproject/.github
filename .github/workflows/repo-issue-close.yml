@@ -14,9 +14,17 @@ on:
       - closed
 jobs:
   
+  dump_contexts_to_log:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "🚛 Dump GitHub context"
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+
   unassign-reviewers:
     name: "🙅 Unassign reviewers from PR"
-    if: ${{ github.event_name == 'pull_request' }}
+    if: ${{ github.event_name == 'pull_request' || github.event_name == 'push' }}
     runs-on: ubuntu-latest
     steps:
       - name: "🧐 Get reviewers"
@@ -45,8 +53,8 @@ jobs:
         run: echo "num=${{ github.event.issue.number }}" >> $GITHUB_ENV
       - name: "#️⃣ Get PR number"
         id: pr_number   
-        if: ${{ github.event_name == 'pull_request' }}
-        run: echo "num=${{ github.event.pull_request.number }}" >> $GITHUB_ENV
+        if: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target' || github.event_name == 'push' }}
+        run: echo "num=${{ github.event.number }}" >> $GITHUB_ENV
       - name: "🫥 Remove assignees"
         id: delete
         uses: octokit/request-action@v2.x
