@@ -37,12 +37,19 @@ body:
       placeholder: It should ...
 
   - type: textarea
+    id: log
+    attributes:
+      label: Log output
+      description: 📜 If applicable, copy and paste any log output here.
+      placeholder: Any relevant log output
+      render: shell
+
+  - type: textarea
     id: screenshot
     attributes:
       label: Screenshots
       description: 📸 If applicable, add screenshots to help explain your problem.
       placeholder: Drag-and-drop some image files
-      render: bash
 
   - type: textarea
     id: context
