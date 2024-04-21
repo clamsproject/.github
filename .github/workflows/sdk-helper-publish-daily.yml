@@ -46,7 +46,7 @@ jobs:
           echo "VERSION=$(date +%y%m%d)" >> $GITHUB_ENV
           echo "PACKAGE=$(echo "${{ inputs.pypi_dist_name }}" | tr '-' '_')" >> $GITHUB_ENV
       - name: "🛍️ Checkout repository"
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: "🐍 Setup Python"
         uses: actions/setup-python@v4
         with:
