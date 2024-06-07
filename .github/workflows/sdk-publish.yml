@@ -27,6 +27,8 @@ jobs:
     - name: "🏗 Build sdist"
       run: |
         echo ${{ env.VERSION }} > VERSION
+        python3 -c "import setuptools; print(setuptools.__version__)"
+        python3 -m pip install setuptools~=69.3  # this version fully conforms PEP-625 and applies wheel name convention to sdist as well
         make package
         make test
     - name: "🗞️ Build HTML documentation"
