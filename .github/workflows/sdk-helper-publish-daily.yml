@@ -6,6 +6,17 @@ on:
       pypi_dist_name:
         required: false
         type: string
+        description: 'Name of the package to be uploaded to PyPI (i.e., pip-name), will use the repository name if not provided'
+      publish_cycle:
+        required: false
+        type: string
+        default: '1 days'
+        description: 'Time interval for checking updates (e.g., 1 days, 2 hours), will use `1 days` if not provided'
+      version:
+        required: false
+        type: string
+        description: 'version of the PyPI package, will use `YYMMDD` format if not provided'
+        
     secrets:
       PYPITOKEN:
         description: "PyPI uploader account token"
@@ -25,12 +36,12 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: "🔬 Get pushes in the last 24 hours"
+      - name: "🔬 Get pushes in the last cycle"
         id: get_recent
         run: |
-          git --no-pager log --since='1 days ago' --oneline -- . ':^.github'
+          git --no-pager log --since='${{ inputs.publish_cycle }} ago' --oneline -- . ':^.github'
           echo ===
-          echo "RECENT=$(git --no-pager log --since='1 days ago' --oneline -- . ':^.github' | wc -l)" >> $GITHUB_OUTPUT
+          echo "RECENT=$(git --no-pager log --since='${{ inputs.publish_cycle }} ago' --oneline -- . ':^.github' | wc -l)" >> $GITHUB_OUTPUT
 
   build-and-upload:
     name: "📦 Build a PyPI source distribution and upload to PyPI"
@@ -43,8 +54,8 @@ jobs:
     steps:
       - name: "🏷 Prepare package metadata"
         run: |
-          echo "VERSION=$(date +%y%m%d)" >> $GITHUB_ENV
-          echo "PACKAGE=$(echo "${{ inputs.pypi_dist_name }}" | tr '-' '_')" >> $GITHUB_ENV
+          echo "VERSION=$(if [ ! -z "${{ inputs.version }}" ]; then echo ${{ inputs.version }}; else date +%y%m%d; fi)" >> $GITHUB_ENV
+          echo "PACKAGE=$(if [ ! -z "${{ inputs.pypi_dist_name }}" ]; then echo ${{ inputs.version }}; else ${{ github.repository }} ; fi | tr '-' '_')" >> $GITHUB_ENV
       - name: "🛍️ Checkout repository"
         uses: actions/checkout@v4
       - name: "🐍 Setup Python"
