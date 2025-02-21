@@ -77,6 +77,7 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
+            type=raw,value=latest
             type=raw,value=${{ env.BAKE_VERSION }}
             type=ref,event=tag
             type=ref,event=pr
