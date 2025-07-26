@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       OS: linux
-      PYTHON: '3.8'
+      PYTHON: '3.10'
     steps:
     - name: "🏷 Prepare package metadata"
       run: |
@@ -19,11 +19,11 @@ jobs:
       with:
         ref: ${{ env.VERSION }}
         fetch-depth: 0
-        token: ${{ secrets.GH_CLAMSBOT_TOKEN }}
+        token: ${{ secrets.GITHUB_TOKEN }}
     - name: "🐍 Setup Python"
       uses: actions/setup-python@v4
       with:
-        python-version: 3.8
+        python-version: '3.10'
     - name: "🏗 Build sdist"
       run: |
         echo ${{ env.VERSION }} > VERSION

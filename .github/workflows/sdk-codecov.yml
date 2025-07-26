@@ -6,13 +6,17 @@ on:
       CC_REPO_UPLOAD_TOKEN:
         description: 'A CODECOV_TOKEN for their upload CLI tool. Should be obtained repo-by-repo basis, from https://app.codecov.io/gh/GH_ORG_NAME/GH_REPO_NAME/settings'
         required: true
+
 jobs:
-  test-and-codecov:
+  test:
     name: "🧪 Test with coverage"
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.12", "3.11", "3.10"]
     env:
       OS: linux
-      PYTHON: '3.8'
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
     - name: "🛍️ Checkout repository"
       uses: actions/checkout@v4
@@ -21,12 +25,31 @@ jobs:
     - name: "🐍 Setup Python"
       uses: actions/setup-python@v4
       with:
-        python-version: 3.8
+        python-version: ${{ matrix.python-version }}
     - name: "🧪 Run test and generate coverage report"
       working-directory: .
       run: |
-        echo "codecov.dev" > VERSION
+        echo "0.0.0+codecov.dev" > VERSION
         make test
+    - name: "📦 Upload coverage artifact"
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage-report-${{ matrix.python-version }}
+        path: ./coverage.xml
+
+  upload:
+    name: "☁️ Upload coverage to Codecov"
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+    - name: "🛍️ Checkout repository"
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ github.ref }}
+    - name: "📥 Download coverage artifact"
+      uses: actions/download-artifact@v4
+      with:
+        name: coverage-report-3.10
     - name: "☁️ Upload coverage to Codecov"
       uses: codecov/codecov-action@v3
       with:
