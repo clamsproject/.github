@@ -32,7 +32,7 @@ jobs:
       recent: ${{ steps.get_recent.outputs.RECENT }}
     env:
       OS: linux
-      PYTHON: "3.8"
+      PYTHON: "3.10"
     steps:
       - name: "🛍️ Checkout repository"
         uses: actions/checkout@v4
