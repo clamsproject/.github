@@ -45,6 +45,10 @@ jobs:
           echo ===
           echo "RECENT=$(git --no-pager log --since='${{ inputs.publish_cycle }} ago' --oneline -- . ':^.github' | wc -l)" >> $GITHUB_OUTPUT
 
+  keep-alive:
+    name: "🕰️ Keep repository alive"
+    uses: ./.github/workflows/repo-keep-alive.yml
+
   build-and-push-image:
     name: "🐳 Build and push image"
     needs: [check-updates]

@@ -1,0 +1,49 @@
+name: "🕰️ Keep Alive"
+
+on:
+  workflow_call:
+    inputs:
+      stale_days:
+        required: false
+        type: number
+        default: 58
+        description: 'Number of days after which to create a dummy commit'
+
+jobs:
+  check-stale-commits:
+    name: "🕰️ Check for stale commits"
+    runs-on: ubuntu-latest
+    outputs:
+      needs_dummy_commit: ${{ steps.check_stale.outputs.NEEDS_COMMIT }}
+    steps:
+      - name: "🛍️ Checkout repository"
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: "🕰️ Check if last commit is older than ${{ inputs.stale_days }} days"
+        id: check_stale
+        run: |
+          LAST_COMMIT_DATE=$(git log -1 --format=%ct)
+          CURRENT_DATE=$(date +%s)
+          DAYS_SINCE_COMMIT=$(( (CURRENT_DATE - LAST_COMMIT_DATE) / 86400 ))
+          echo "Days since last commit: $DAYS_SINCE_COMMIT"
+          if [ $DAYS_SINCE_COMMIT -gt ${{ inputs.stale_days }} ]; then
+            echo "NEEDS_COMMIT=true" >> $GITHUB_OUTPUT
+          else
+            echo "NEEDS_COMMIT=false" >> $GITHUB_OUTPUT
+          fi
+
+  create-dummy-commit:
+    name: "📝 Create dummy commit"
+    needs: [check-stale-commits]
+    if: needs.check-stale-commits.outputs.needs_dummy_commit == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: "🛍️ Checkout repository"
+        uses: actions/checkout@v4
+      - name: "📝 Create and push dummy commit"
+        run: |
+          git config --local user.email "admin@clams.ai"
+          git config --local user.name "clams-bot"
+          git commit --allow-empty -m "chore: keep repository active"
+          git push origin main
