@@ -61,13 +61,15 @@ jobs:
       - name: "🏷 Prepare package metadata"
         run: |
           echo "VERSION=$(if [ ! -z "${{ inputs.version }}" ]; then echo ${{ inputs.version }}; else git log -1 --format=%cd --date=format:%y%m%d; fi)" >> $GITHUB_ENV
-          echo "PACKAGE=$(if [ ! -z "${{ inputs.pypi_dist_name }}" ]; then echo ${{ inputs.version }}; else ${{ github.repository }} ; fi | tr '-' '_')" >> $GITHUB_ENV
+          echo "PACKAGE=$(if [ ! -z "${{ inputs.pypi_dist_name }}" ]; then echo ${{ inputs.pypi_dist_name }}; else ${{ github.repository }} ; fi | tr '-' '_')" >> $GITHUB_ENV
       - name: "🐍 Setup Python"
         uses: actions/setup-python@v4
         with:
           python-version: ${{ env.PYTHON }}
       - name: "🏗️ Create tag and build sdist using the tag as version "
         run: |
+          echo ${{ env.VERSION }}
+          echo ${{ env.PACKAGE }}
           git tag ${{ env.VERSION }}
           python -m pip install --upgrade build
           python -m build

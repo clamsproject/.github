@@ -45,5 +45,7 @@ jobs:
         run: |
           git config --local user.email "admin@clams.ai"
           git config --local user.name "clams-bot"
-          git commit --allow-empty -m "chore: keep repository active"
+          date > .for-gha-do-not-delete
+          git add .for-gha-do-not-delete
+          git commit -m "chore: keep repository active"
           git push origin main
