@@ -39,9 +39,9 @@ jobs:
       - name: "🔬 Get pushes in the last cycle"
         id: get_recent
         run: |
-          git --no-pager log --since='${{ inputs.publish_cycle }} ago' --oneline -- . ':^.github'
+          git --no-pager log --since='${{ inputs.publish_cycle }} ago' --oneline -- . ':^.github' ':^.for-gha-do-not-delete'
           echo ===
-          echo "RECENT=$(git --no-pager log --since='${{ inputs.publish_cycle }} ago' --oneline -- . ':^.github' | wc -l)" >> $GITHUB_OUTPUT
+          echo "RECENT=$(git --no-pager log --since='${{ inputs.publish_cycle }} ago' --oneline -- . ':^.github' ':^.for-gha-do-not-delete' | wc -l)" >> $GITHUB_OUTPUT
 
   keep-alive:
     name: "🕰️ Keep repository alive"
