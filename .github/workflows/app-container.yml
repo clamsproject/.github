@@ -26,6 +26,24 @@ jobs:
       contents: read
       packages: write
     steps:
+      - name: Free Disk Space (Ubuntu)
+      # Remove unnecessary files to free up disk space
+      # the base ubuntu-latest runner has about 14 GB free, with a lot of tools pre-installed
+      # this step basically removes tools that's not likely to be needed in bulding CLAMS app container images
+        uses: jlumbroso/free-disk-space@main
+        with:
+          # this might remove tools that are actually needed,
+          # if set to "true" but frees about 6 GB
+          tool-cache: false
+
+          # all of these default to true, but feel free to set to
+          # "false" if necessary for your workflow
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: true
+          docker-images: true
+          swap-storage: true
       - name: "🛍️ Checkout repository"
         uses: actions/checkout@v4
         with:
