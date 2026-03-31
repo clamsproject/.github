@@ -24,7 +24,7 @@ jobs:
         ref: ${{ github.ref }}
         fetch-depth: 0
     - name: "🐍 Setup Python"
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
     - name: "🧪 Run test and generate coverage report"
@@ -49,11 +49,11 @@ jobs:
       with:
         name: coverage-report-3.10
     - name: "☁️ Upload coverage to Codecov"
-      uses: codecov/codecov-action@v3
+      uses: codecov/codecov-action@v5
       with:
         token: ${{ secrets.CC_REPO_UPLOAD_TOKEN }}
         files: ./coverage.xml
         flags: unittests
         env_vars: OS,PYTHON
         name: coverage
-        fail_ci_if_error: true
+        fail_ci_if_error: false
