@@ -1,0 +1,45 @@
+name: "♻️,🔖 Release PR check"
+
+# Reusable workflow that guards release PRs (PRs to `main`, titled
+# `releasing X.Y.Z`): it verifies that documentation/target-versions.csv
+# already carries a row for the version named in the PR title. Repos
+# without that CSV (e.g. clams-vocabulary) are a no-op.
+
+on:
+  workflow_call:
+
+jobs:
+  check-target-versions:
+    name: "🔖 Verify target-versions.csv has the release row"
+    runs-on: ubuntu-latest
+    steps:
+      - name: "🛍️ Checkout repository"
+        uses: actions/checkout@v4
+
+      - name: "🔎 Verify release row"
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          CSV=documentation/target-versions.csv
+
+          # Repo-level gate: repos without the CSV (clams-vocabulary) no-op.
+          if [ ! -f "$CSV" ]; then
+            echo "No $CSV in this repo; nothing to check."
+            exit 0
+          fi
+
+          # PR-level gate: only 'releasing X.Y.Z' titles are release PRs.
+          VERSION=$(echo "$PR_TITLE" \
+            | grep -oE '^releasing [0-9]+\.[0-9]+\.[0-9]+' \
+            | grep -oE '[0-9]+\.[0-9]+\.[0-9]+')
+          if [ -z "$VERSION" ]; then
+            echo "PR title is not 'releasing X.Y.Z'; not a release PR. Skipping."
+            exit 0
+          fi
+
+          ESC=$(echo "$VERSION" | sed 's/\./\\./g')
+          if ! grep -qE "^\`?${ESC}[ ,]" "$CSV"; then
+            echo "::error::$CSV has no row for ${VERSION}. Run build-tools/prep_release.py ${VERSION} and commit it in this release PR."
+            exit 1
+          fi
+          echo "OK: $CSV has a row for ${VERSION}"
