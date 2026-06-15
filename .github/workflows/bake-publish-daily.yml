@@ -35,7 +35,7 @@ jobs:
       PYTHON: "3.10"
     steps:
       - name: "🛍️ Checkout repository"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
       - name: "🔬 Get pushes in the last cycle"
@@ -59,7 +59,7 @@ jobs:
       packages: write
     steps:
       - name: "🛍️ Checkout repository"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: ${{ inputs.version }}
           fetch-depth: 0

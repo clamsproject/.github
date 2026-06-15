@@ -33,7 +33,7 @@ jobs:
       PYTHON: "3.10"
     steps:
       - name: "🛍️ Checkout repository"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
       - name: "🔬 Get pushes in the last cycle"
@@ -57,13 +57,13 @@ jobs:
       PYTHON: "3.10"
     steps:
       - name: "🛍️ Checkout repository"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: "🏷 Prepare package metadata"
         run: |
           echo "VERSION=$(if [ ! -z "${{ inputs.version }}" ]; then echo ${{ inputs.version }}; else git log -1 --format=%cd --date=format:%y%m%d; fi)" >> $GITHUB_ENV
           echo "PACKAGE=$(if [ ! -z "${{ inputs.pypi_dist_name }}" ]; then echo ${{ inputs.pypi_dist_name }}; else ${{ github.repository }} ; fi | tr '-' '_')" >> $GITHUB_ENV
       - name: "🐍 Setup Python"
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ env.PYTHON }}
       - name: "🏗️ Create tag and build sdist using the tag as version "

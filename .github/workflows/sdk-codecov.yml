@@ -19,11 +19,11 @@ jobs:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
     - name: "🛍️ Checkout repository"
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         ref: ${{ github.ref }}
     - name: "🐍 Setup Python"
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v6
       with:
         python-version: ${{ matrix.python-version }}
     - name: "🧪 Run test and generate coverage report"
@@ -43,7 +43,7 @@ jobs:
     needs: test
     steps:
     - name: "🛍️ Checkout repository"
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         ref: ${{ github.ref }}
     - name: "📥 Download coverage artifact"
